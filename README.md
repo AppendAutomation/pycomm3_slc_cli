@@ -39,12 +39,50 @@ pycomm3_slc_cli 192.168.1.10 Read N9:0{5}
 n9:0, [1, 2, 3, 4, 5], N, None
 ```
 
-Get the current and last fault code:
+Get the current and last fault code with their descriptions:
 ```
-pycomm3_slc_cli 100.100.100.50 Read S:6
-s:6, 0, S, None
-pycomm3_slc_cli 100.100.100.50 Read S:54
-s:54, 2140, S, None
+pycomm3_slc_cli 100.100.100.50 GetFaultCodes
+    Processor:      the major error halted bit S:1/13 is SET - the processor
+                    is halted on a major fault.
+
+Current major error fault code (S:6): 0x0A52  (2642 decimal)
+    Description:    A module required for the user program is detected as
+                    missing or removed.
+    Additional:     The high byte 0x0A identifies slot 10.
+    Classification: Recoverable user fault - the user fault routine may clear
+                    the fault by clearing S:1/13.
+    Action:         Either disable the slot in the status file (S:11 and
+                    S:12), or insert the required module in the slot.
+
+Last major error fault code (S:54): 0x0020  (32 decimal)
+    Description:    A minor error bit is set at the end of the scan.  Refer to
+                    the S:5 minor error bits (lower byte only).
+    ...
+```
+
+```S:6``` holds the fault code for the current or most recent major error and
+```S:54``` mirrors the last code stored in S:6 (SLC 5/03 and higher processors
+only).  The processor never clears S:6, so ```GetFaultCodes``` also reports the
+major error halted bit ```S:1/13``` to show whether the processor is actually
+halted on the code it reports.  Codes that carry additional information in their
+high byte - the slot number for the I/O errors, or the data file number for
+code xx39 - are interpreted as part of the description.  When the current code
+is ```0020``` the minor error bits in ```S:5``` are read and reported, and when
+it is ```00A1``` on an SLC 5/05 the Ethernet daughterboard code in ```S:15``` is
+reported.
+
+The descriptions come from the Allen-Bradley SLC 500 Instruction Set Reference
+Manual, publication 1747-RM001G-EN-P (November 2008) - chapter 16
+"Troubleshooting Faults" and appendix B "SLC Status File".
+
+Use ```Output minimal``` for a one line per code form:
+```
+pycomm3_slc_cli> Output minimal
+Output format set to minimal
+pycomm3_slc_cli> GetFaultCodes
+S:1/13=1
+S:6=0x0A52 A module required for the user program is detected as missing or removed.  The high byte 0x0A identifies slot 10.
+S:54=0x0020 A minor error bit is set at the end of the scan.  Refer to the S:5 minor error bits (lower byte only).
 ```
 
 
@@ -56,6 +94,7 @@ The following commands are not case-sensitive.
 + ```Quit```                        - Leave console application.
 + ```GetPLCTime```                  - Returns the PLC time.
 + ```SetPLCTime```                  - Sets the PLC time to the current time.
++ ```GetFaultCodes```               - Returns the current (S:6) and last (S:54) major error fault codes with their descriptions.
 + ```Read <tag>```                  - Returns the specified tag's value from the target PLC.
 + ```Write <tag> <value>```         - Sets the specified tag's value in the target PLC.
 + ```Output (Raw | Readable)```     - Sets the output format.  Raw is the default.
