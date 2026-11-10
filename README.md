@@ -7,6 +7,11 @@ Warning!  PLCs control industrial equipment and writing values to a PLC that is 
 
 Execution of the application will take the form of a single command or a shell console application allowing multiple commands to be executed.
 
+## Download
+The latest release is **[v0.3.0](https://github.com/AppendAutomation/pycomm3_slc_cli/releases/tag/v0.3.0)** - download [pycomm3_slc_cli.exe](https://github.com/AppendAutomation/pycomm3_slc_cli/releases/download/v0.3.0/pycomm3_slc_cli.exe) and run it, no installation required.  All releases are listed on the [releases page](https://github.com/AppendAutomation/pycomm3_slc_cli/releases).
+
+The executable is built with PyInstaller against Python 3.8.10 on Windows 7 SP1 - the last Python release with official Windows 7 support - so it runs on Windows 7 and newer.  It is a 64-bit executable and will not run on 32-bit Windows.
+
 ## Examples of Usage
 Single command syntax example:
 ```
@@ -118,10 +123,10 @@ https://github.com/ottowayi/pycomm3
 **Special thanks to ruscito, ottowayi and all the contributors that make pycomm3 possible.**
 
 ## Development Environment
-In order to build the executable using pyinstaller, first clone this repository and then install both pylogix and pyinstaller using pip.
+In order to build the executable using pyinstaller, first clone this repository and then install both pycomm3 and pyinstaller using pip.
 
 ```
-git clone https://github.com/dhunt84971/pycomm3_slc_cli.git
+git clone https://github.com/AppendAutomation/pycomm3_slc_cli.git
 cd pycomm3_slc_cli
 pip install pycomm3
 pip install pyinstaller
