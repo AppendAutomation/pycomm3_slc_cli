@@ -12,6 +12,14 @@ The latest release is **[v0.3.0](https://github.com/AppendAutomation/pycomm3_slc
 
 The executable is built with PyInstaller against Python 3.8.10 on Windows 7 SP1 - the last Python release with official Windows 7 support - so it runs on Windows 7 and newer.  It is a 64-bit executable and will not run on 32-bit Windows.
 
+## User Manual
+A full user manual is in the [docs](docs) folder, in both
+[Word](docs/pycomm3_slc_cli_User_Manual.docx) and
+[PDF](docs/pycomm3_slc_cli_User_Manual.pdf) form.  It covers installation, the
+safety warnings that come with writing to a live controller, SLC addressing,
+the output formats and every command, with screenshots captured from a real
+session against an SLC 500.  Rebuild it with `python3 docs/build_user_manual.py`.
+
 ## Examples of Usage
 Single command syntax example:
 ```

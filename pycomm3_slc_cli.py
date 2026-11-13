@@ -897,6 +897,11 @@ def read(args):
         print(ret)
     elif (output_format == "readable"):
         print(ret.value)
+    elif (output_format == "minimal"):
+        # One "tag=value" line, the same form the tag file commands produce,
+        # so that a script can parse a single read the same way it parses a
+        # whole tag file.
+        print("{0}={1}".format(args, ret.value))
     if (show_timing):
         print("Executed in {0:7.3f} seconds.".format(exec_time))
     return
@@ -1020,13 +1025,53 @@ def readOptimizedTagFile(args):
             print("Executed in {0:7.3f} seconds.".format(exec_time))    
     return
 
+def getWriteValue(tag, value):
+    # The value arrives from the command line as text, but pycomm3 packs it
+    # according to the data file type and rejects a string outright ("Failed to
+    # create a writeable value"), so it has to be converted here first.
+    if ("/" in tag):
+        # A bit address takes a 1 or a 0.
+        state = value.casefold()
+        if (state in ["1", "on", "true", "set"]):
+            return 1
+        if (state in ["0", "off", "false", "clear"]):
+            return 0
+        raise ValueError("{0} is a bit address, so the value must be 1 or 0, "
+                         "not {1}.".format(tag, value))
+    if (not isNumber(value)):
+        raise ValueError("{0} is not a number.".format(value))
+    number = getNumber(value)
+    # The floating point files hold a fractional value; every other data file
+    # holds an integer, and silently rounding one would write a value the
+    # operator did not ask for.
+    if (tag.split(":")[0].casefold().startswith("f")):
+        return float(number)
+    if (float(number) != int(float(number))):
+        raise ValueError("{0} holds integers, so {1} cannot be written to "
+                         "it.".format(tag, value))
+    return int(float(number))
+
 def write(args):
     if (comm == None):
         print("ERROR - No IPAddress specified.  Use IPAddress command.")
         return
     words = args.split()
+    if (len(words) < 2):
+        print("ERROR - Write requires a tag and a value.  See help for more info.")
+        return
+    tag = words[0]
+    try:
+        value = getWriteValue(tag, words[1])
+    except ValueError as error:
+        print("ERROR - {0}".format(str(error)))
+        return
     start_time = time.time()
-    ret = comm.write((words[0], words[1]))
+    try:
+        ret = comm.write((tag, value))
+    except Exception as error:
+        print("ERROR - Unable to write {0} to {1}.  {2}".format(words[1], tag,
+            getErrorMessage(error)))
+        return
     exec_time = time.time() - start_time
     print(ret)
     if (show_timing):
@@ -1085,7 +1130,11 @@ def parseCommand(command):
         if (words[0] == "help"):
             getHelp(command)
         elif (words[0] == "ipaddress"):
-            ipAddress(words[1])
+            if (len(words) > 1):
+                ipAddress(words[1])
+            else:
+                print("ERROR - IPAddress requires an IP address.  See help "
+                      "for more info.")
         elif (words[0] == "getplctime"):
             getPLCTime(getAdditionalArgs(command))
         elif (words[0] == "setplctime"):
