@@ -40,7 +40,7 @@ import textwrap
 
 from pycomm3 import SLCDriver
 from pathlib import Path
-version = "0.3.0"
+version = "0.3.1"
 comm = None
 output_format = "raw"
 output_formats = ["raw", "readable", "minimal"]
@@ -1078,10 +1078,17 @@ def write(args):
         print("Executed in {0:7.3f} seconds.".format(exec_time))
     return
 
+def getVersion(args):
+    # Returned as well as printed so that the value is available to any caller
+    # that imports this module instead of running it from the console.
+    print(version)
+    return version
+
 def getHelp(args):
     print('''
     Commands: (Not case sensitive.)
         Help                        - Displays this list of commands.
+        Version                     - Displays the application version number.
         IPAddress <ip address>      - Sets the IP address for the target PLC.
         Quit                        - Leave console application.
         GetPLCTime                  - Returns the PLC time.
@@ -1090,7 +1097,8 @@ def getHelp(args):
                                       fault codes with their descriptions.
         Read <tag>                  - Returns the specified tag's value from the target PLC.
         Write <tag> <value>         - Sets the specified tag's value in the target PLC.
-        Output (Raw | Readable)     - Sets the output format.  Raw is the default.
+        Output (Raw | Readable | Minimal)
+                                    - Sets the output format.  Raw is the default.
         ShowTiming (On | Off)       - Turns on or off the time to execute feedback.
           
     Multi-Tag Commands: (Filenames are case sensitive.)
@@ -1129,6 +1137,8 @@ def parseCommand(command):
     if (len(words) > 0):
         if (words[0] == "help"):
             getHelp(command)
+        elif (words[0] == "version"):
+            getVersion(getAdditionalArgs(command))
         elif (words[0] == "ipaddress"):
             if (len(words) > 1):
                 ipAddress(words[1])

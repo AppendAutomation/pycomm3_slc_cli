@@ -187,7 +187,7 @@ def build():
     doc.styles['Normal'].paragraph_format.space_after = Pt(6)
 
     footer = s.footer.paragraphs[0]
-    footer.text = 'pycomm3_slc_cli User Manual \u2014 Version 0.3.0'
+    footer.text = 'pycomm3_slc_cli User Manual \u2014 Version 0.3.1'
     footer.alignment = WD_ALIGN_PARAGRAPH.CENTER
     footer.runs[0].font.size = Pt(8)
 
@@ -201,8 +201,8 @@ def build():
     r.bold = True
     meta = doc.add_paragraph()
     meta.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    r = meta.add_run('Application version 0.3.0\n'
-                     'Document revision 1 \u2014 November 10, 2026\n'
+    r = meta.add_run('Application version 0.3.1\n'
+                     'Document revision 2 \u2014 November 13, 2026\n'
                      'Append Automation')
     r.font.size = Pt(11)
 
@@ -415,10 +415,10 @@ pyinstaller -F pycomm3_slc_cli.py
     table(doc, 'Equipment used to capture the examples in this manual',
           ['Item', 'Detail'],
           [['Test PC', 'Windows 7 Professional SP1, 64-bit, build 6.1.7601'],
-           ['Application', 'pycomm3_slc_cli.exe 0.3.0, run from C:\\pycomm3_demo'],
+           ['Application', 'pycomm3_slc_cli.exe 0.3.1, run from C:\\pycomm3_demo'],
            ['Controller', 'Allen-Bradley SLC 500 family processor at 192.168.2.150'],
            ['Connection', 'EtherNet/IP over the local Ethernet network'],
-           ['Captured', 'November 10, 2026']])
+           ['Captured', 'November 2026']])
 
     # ---- 4. Running ------------------------------------------------------
     doc.add_heading('4. Running the application', level=1)
@@ -602,8 +602,17 @@ N7:0, 20, N, None
          'connection and can be run from the command line or at the prompt.')
     figure(doc, 'fig05_help.png', 'The Help command')
 
-    # 7.2 IPAddress
-    doc.add_heading('7.2 IPAddress', level=2)
+    # 7.2 Version
+    doc.add_heading('7.2 Version', level=2)
+    syntax(doc, 'Version')
+    body(doc,
+         'Prints the version number of the application itself. It needs no '
+         'connection, and is the quickest way to confirm which build of '
+         'pycomm3_slc_cli.exe is actually installed on a machine before '
+         'reporting a problem with it.')
+
+    # 7.3 IPAddress
+    doc.add_heading('7.3 IPAddress', level=2)
     syntax(doc, 'IPAddress <ip address>')
     body(doc,
          'Sets the target controller and opens the connection immediately. '
@@ -628,8 +637,8 @@ ERROR - Unable to connect to 192.168.2.199.  timed out
          'IPAddress typed with no address is reported as an error and leaves '
          'the session and its existing connection untouched.')
 
-    # 7.3 Quit
-    doc.add_heading('7.3 Quit', level=2)
+    # 7.4 Quit
+    doc.add_heading('7.4 Quit', level=2)
     syntax(doc, 'Quit')
     body(doc,
          'Leaves the console session and closes the connection. It has no '
@@ -640,8 +649,8 @@ ERROR - Unable to connect to 192.168.2.199.  timed out
          'something other than quit, and it is reported as an unrecognized '
          'command instead of ending the session.')
 
-    # 7.4 Read
-    doc.add_heading('7.4 Read', level=2)
+    # 7.5 Read
+    doc.add_heading('7.5 Read', level=2)
     syntax(doc, 'Read <tag>')
     body(doc,
          'Reads one address from the controller and prints the result. The '
@@ -675,8 +684,8 @@ enough elements in data file
          'so switch format rather than splitting the read when you need the '
          'whole block.')
 
-    # 7.5 Write
-    doc.add_heading('7.5 Write', level=2)
+    # 7.6 Write
+    doc.add_heading('7.6 Write', level=2)
     syntax(doc, 'Write <tag> <value>')
     warning(doc,
             'Writing to a controller that is running equipment can move '
@@ -710,8 +719,8 @@ enough elements in data file
          'overwritten by the program almost immediately. If a value you '
          'write does not appear to stick, the program is writing it too.')
 
-    # 7.6 GetPLCTime
-    doc.add_heading('7.6 GetPLCTime', level=2)
+    # 7.7 GetPLCTime
+    doc.add_heading('7.7 GetPLCTime', level=2)
     syntax(doc, 'GetPLCTime')
     body(doc,
          'Reads the controller clock, which occupies the status words S:37 '
@@ -730,8 +739,8 @@ pycomm3_slc_cli> GetPLCTime
          'ShowTiming has no effect on GetPLCTime or SetPLCTime. Neither '
          'command reports how long it took.')
 
-    # 7.7 SetPLCTime
-    doc.add_heading('7.7 SetPLCTime', level=2)
+    # 7.8 SetPLCTime
+    doc.add_heading('7.8 SetPLCTime', level=2)
     syntax(doc, 'SetPLCTime')
     warning(doc,
             'This command changes the controller clock to the clock of the '
@@ -751,8 +760,8 @@ pycomm3_slc_cli> GetPLCTime
          'value read back from the controller. The write is not verified. '
          'Follow a SetPLCTime with a GetPLCTime when it matters.')
 
-    # 7.8 GetFaultCodes
-    doc.add_heading('7.8 GetFaultCodes', level=2)
+    # 7.9 GetFaultCodes
+    doc.add_heading('7.9 GetFaultCodes', level=2)
     syntax(doc, 'GetFaultCodes')
     body(doc,
          'Reports the current major error fault code in S:6 and the last '
@@ -790,8 +799,8 @@ pycomm3_slc_cli> GetPLCTime
          'processor the last fault code line reports that the word is '
          'unavailable, which is expected rather than a failure.')
 
-    # 7.9 Output
-    doc.add_heading('7.9 Output', level=2)
+    # 7.10 Output
+    doc.add_heading('7.10 Output', level=2)
     syntax(doc, 'Output <raw | readable | minimal>')
     body(doc,
          'Selects the output format for the rest of the session, as '
@@ -805,8 +814,8 @@ pycomm3_slc_cli> Output Readable
 Invalid output format
 ''')
 
-    # 7.10 ShowTiming
-    doc.add_heading('7.10 ShowTiming', level=2)
+    # 7.11 ShowTiming
+    doc.add_heading('7.11 ShowTiming', level=2)
     syntax(doc, 'ShowTiming <on | off>')
     body(doc,
          'Turns on a line reporting how long each command took. It is off by '
@@ -826,8 +835,8 @@ pycomm3_slc_cli> Read N7:0{5}
 Executed in   0.078 seconds.
 ''')
 
-    # 7.11 ReadTagFile
-    doc.add_heading('7.11 ReadTagFile', level=2)
+    # 7.12 ReadTagFile
+    doc.add_heading('7.12 ReadTagFile', level=2)
     syntax(doc, 'ReadTagFile <filename> [<outfile>]')
     body(doc,
          'Reads a list of addresses from a text file, one address per line, '
@@ -838,7 +847,7 @@ Executed in   0.078 seconds.
          'Each address is read individually, so a file of a hundred '
          'addresses is a hundred round trips to the controller. '
          'OptimizeTagFile and ReadOptimizedTagFile exist to avoid that cost; '
-         'see Section 7.13.')
+         'see Section 7.14.')
     figure(doc, 'fig10_read_tag_file.png',
            'A tag list file and the values ReadTagFile returned for it')
     body(doc,
@@ -857,8 +866,8 @@ F8:0=43544.0
          'The output format set by the Output command does not affect '
          'ReadTagFile. Its output is always tag=value.')
 
-    # 7.12 OptimizeTagFile
-    doc.add_heading('7.12 OptimizeTagFile', level=2)
+    # 7.13 OptimizeTagFile
+    doc.add_heading('7.13 OptimizeTagFile', level=2)
     syntax(doc, 'OptimizeTagFile <filename> [<outfile>]')
     body(doc,
          'Turns a list of individual addresses into a much shorter list of '
@@ -887,8 +896,8 @@ F8:0=43544.0
             'how much data crosses the network, but a list containing N7:0 '
             'and N7:200 produces a read of 201 words even if you wanted two.')
 
-    # 7.13 ReadOptimizedTagFile
-    doc.add_heading('7.13 ReadOptimizedTagFile', level=2)
+    # 7.14 ReadOptimizedTagFile
+    doc.add_heading('7.14 ReadOptimizedTagFile', level=2)
     syntax(doc,
            'ReadOptimizedTagFile <tagfilename> <optimizedtagfilename> '
            '[<outfile>]')
@@ -998,10 +1007,10 @@ pycomm3_slc_cli> ReadOptimizedTagFile tags.txt opt.txt readings.txt
     # ---- 9. Known limitations -------------------------------------------
     doc.add_heading('9. Known limitations', level=1)
     body(doc,
-         'The behaviors below are present in version 0.3.0. They are listed '
+         'The behaviors below are present in version 0.3.1. They are listed '
          'so that they are not mistaken for a fault in the controller or the '
          'network.')
-    table(doc, 'Known limitations in version 0.3.0',
+    table(doc, 'Known limitations in version 0.3.1',
           ['Area', 'Behavior'],
           [['ReadOptimizedTagFile with a single floating point address',
             'A tag list in which a floating point file contributes only one '
@@ -1037,6 +1046,7 @@ pycomm3_slc_cli> ReadOptimizedTagFile tags.txt opt.txt readings.txt
     table(doc, 'All commands, in the order Help lists them',
           ['Command', 'Purpose', 'Needs a controller'],
           [['Help', 'List the commands.', 'No'],
+           ['Version', 'Report the application version number.', 'No'],
            ['IPAddress <ip address>', 'Set the target and connect.', 'No'],
            ['Quit', 'Leave the console session.', 'No'],
            ['GetPLCTime', 'Read the controller clock.', 'Yes'],

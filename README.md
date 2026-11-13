@@ -8,7 +8,7 @@ Warning!  PLCs control industrial equipment and writing values to a PLC that is 
 Execution of the application will take the form of a single command or a shell console application allowing multiple commands to be executed.
 
 ## Download
-The latest release is **[v0.3.0](https://github.com/AppendAutomation/pycomm3_slc_cli/releases/tag/v0.3.0)** - download [pycomm3_slc_cli.exe](https://github.com/AppendAutomation/pycomm3_slc_cli/releases/download/v0.3.0/pycomm3_slc_cli.exe) and run it, no installation required.  All releases are listed on the [releases page](https://github.com/AppendAutomation/pycomm3_slc_cli/releases).
+The latest release is **[v0.3.1](https://github.com/AppendAutomation/pycomm3_slc_cli/releases/tag/v0.3.1)** - download [pycomm3_slc_cli.exe](https://github.com/AppendAutomation/pycomm3_slc_cli/releases/download/v0.3.1/pycomm3_slc_cli.exe) and run it, no installation required.  All releases are listed on the [releases page](https://github.com/AppendAutomation/pycomm3_slc_cli/releases).
 
 The executable is built with PyInstaller against Python 3.8.10 on Windows 7 SP1 - the last Python release with official Windows 7 support - so it runs on Windows 7 and newer.  It is a 64-bit executable and will not run on 32-bit Windows.
 
@@ -103,6 +103,7 @@ S:54=0x0020 A minor error bit is set at the end of the scan.  Refer to the S:5 m
 ## Commands
 The following commands are not case-sensitive.
 + ```Help```                        - Displays this list of commands.
++ ```Version```                     - Displays the application version number.
 + ```IPAddress <ip address>```      - Sets the IP address for the target PLC.
 + ```Quit```                        - Leave console application.
 + ```GetPLCTime```                  - Returns the PLC time.
@@ -110,7 +111,7 @@ The following commands are not case-sensitive.
 + ```GetFaultCodes```               - Returns the current (S:6) and last (S:54) major error fault codes with their descriptions.
 + ```Read <tag>```                  - Returns the specified tag's value from the target PLC.
 + ```Write <tag> <value>```         - Sets the specified tag's value in the target PLC.
-+ ```Output (Raw | Readable)```     - Sets the output format.  Raw is the default.
++ ```Output (Raw | Readable | Minimal)``` - Sets the output format.  Raw is the default.
 + ```ShowTiming (On | Off)```      - Turns on or off the time to execute feedback.
           
 ### Multi-Tag Commands:
